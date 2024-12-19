@@ -43,7 +43,7 @@ class IMDBDataset(Dataset):
 print("IMDBDataset class defined")
 
 ##########################################################################################
-# 3. Loading the model
+# 3. Load the model
 ##########################################################################################
 #Make sure to import the RobertaForSequenceClassification model from the transformers library
 from transformers import RobertaForSequenceClassification
@@ -58,9 +58,6 @@ tokenizer = AutoTokenizer.from_pretrained('roberta-base')
 #Moving model to specified device
 model.to(DEVICE)
 
-#Initialize the Adam optimizer
-optimizer = AdamW(model.parameters(), lr=3e-4)
-
 ##########################################################################################
 # 4. Split the data
 ##########################################################################################
@@ -71,6 +68,12 @@ val_dataset = IMDBDataset(imdb_dataset['test'], tokenizer)
 #Create batches of data for each dataset
 train_loader = DataLoader(train_dataset, batch_size=12, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=128)
+
+##########################################################################################
+# 5. Initialize optimizer and learning rate scheduler
+##########################################################################################
+#Initialize the Adam optimizer
+optimizer = AdamW(model.parameters(), lr=3e-4) #Learning rate = 3e-4 (!)
 
 #Define learning rate scheduler (lr_scheduler)
 num_training_steps = NUM_EPOCHS * len(train_loader)
@@ -110,7 +113,7 @@ for epoch in range(NUM_EPOCHS):
     print(f'loss = {epoch_loss / i}, epoch = {epoch}')
 
 ##########################################################################################
-# 7. Evaluate the model's performance
+# 6. Evaluate the model's performance
 ##########################################################################################
 #Define metric
 metric = evaluate.combine(["accuracy", "f1", "precision", "recall"])
