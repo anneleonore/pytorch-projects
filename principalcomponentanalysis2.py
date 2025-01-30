@@ -124,7 +124,7 @@ plt.tight_layout()
 plt.show()
 
 ##########################################################################################
-# Additional: View total explained variance
+# Additional I: View total explained variance
 ##########################################################################################
 #Initialize PCA class with n_components is None (all PC are kept)
 pca = PCA(n_components=None)
@@ -132,5 +132,23 @@ pca = PCA(n_components=None)
 #Transform training dataset
 X_train_pca = pca.fit_transform(X_train_std)
 
-#Print explained variance ratio
+#Print explained variance ratio (!) = eigenvalue/sum of eigenvalues
 print(pca.explained_variance_ratio_)
+
+##########################################################################################
+# Additional II: Factor loadings
+##########################################################################################
+#Calculate factor loadings (pca.components_ = eigenvectors, explained_variance_=eigenvalues)
+sklearn_loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+
+#Create new figure
+fig, ax = plt.subplots()
+
+#Axes settings
+ax.bar(range(13), sklearn_loadings[:, 0], align='center')
+ax.set_ylabel('Loadings for PC 1')
+ax.set_xticks(range(13))
+ax.set_xticklabels(df_wine.columns[1:], rotation=90)
+plt.ylim([-1, 1])
+plt.tight_layout()
+plt.show()
