@@ -112,7 +112,7 @@ print(embedding_layer(torch.tensor([3])))
 print(embedding_layer(input_ids))
 
 ####################################################################################
-# C. Tokenizer with positional embeddings
+# D. Tokenizer with positional embeddings
 ####################################################################################
 # I. Instantiate token embedding layer
 vocab_size = 50257
